@@ -1,6 +1,7 @@
-# FastAPI Boilerplate
+# FastAPI API
 
 # Features
+
 - Async SQLAlchemy session
 - Custom user class
 - Top-level dependency
@@ -50,7 +51,6 @@ def test_something():
 
 Go to `core/config.py` and edit `WRITER_DB_URL` and `READER_DB_URL` in the config class.
 
-
 If you need additional logic to use the database, refer to the `get_bind()` method of `RoutingClass`.
 
 ## Custom user for authentication
@@ -96,12 +96,12 @@ After line 18, assign values that you added on `CurrentUser`.
 
 Set a callable function when initialize FastAPI() app through `dependencies` argument.
 
-Refer `Logging` class inside of `core/fastapi/dependencies/logging.py` 
+Refer `Logging` class inside of `core/fastapi/dependencies/logging.py`
 
 ## Dependencies for specific permissions
 
 Permissions `IsAdmin`, `IsAuthenticated`, `AllowAll` have already been implemented.
- 
+
 ```python
 from core.fastapi.dependencies import (
     PermissionDependency,
@@ -125,6 +125,7 @@ async def get_user_list(
 ):
     pass
 ```
+
 Insert permission through `dependencies` argument.
 
 If you want to make your own permission, inherit `BasePermission` and implement `has_permission()` function.
@@ -138,6 +139,7 @@ Refer the README of https://github.com/teamhide/fastapi-event
 ## Cache
 
 ### Caching by prefix
+
 ```python
 from core.helpers.cache import Cache
 
@@ -148,6 +150,7 @@ async def get_user():
 ```
 
 ### Caching by tag
+
 ```python
 from core.helpers.cache import Cache, CacheTag
 

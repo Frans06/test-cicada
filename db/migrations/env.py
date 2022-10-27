@@ -7,7 +7,7 @@ from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import create_async_engine
 
-parent_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
+parent_dir = os.path.abspath(os.path.join(os.getcwd(), ""))
 sys.path.append(parent_dir)
 
 # this is the Alembic Config object, which provides
@@ -28,7 +28,7 @@ fileConfig(config.config_file_name)
 
 # For auto generate schemas
 from core.config import config
-from app.user.models import *
+from db.models import *
 
 target_metadata = Base.metadata
 

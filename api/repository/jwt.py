@@ -1,4 +1,4 @@
-from app.auth.schemas.jwt import RefreshTokenSchema
+from api.schemas.jwt import RefreshTokenSchema
 from core.exceptions.token import DecodeTokenException
 from core.utils.token_helper import TokenHelper
 

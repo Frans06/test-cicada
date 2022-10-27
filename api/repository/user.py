@@ -2,8 +2,8 @@ from typing import Optional, List
 
 from sqlalchemy import or_, select, and_
 
-from app.user.models import User
-from app.user.schemas.user import LoginResponseSchema
+from db.models import User
+from api.schemas.user import LoginResponseSchema
 from core.db import Transactional, Propagation, session
 from core.exceptions import (
     PasswordDoesNotMatchException,

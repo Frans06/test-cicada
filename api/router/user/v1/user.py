@@ -2,15 +2,15 @@ from typing import List
 
 from fastapi import APIRouter, Depends, Query
 
-from api.user.v1.request.user import LoginRequest
-from api.user.v1.response.user import LoginResponse
-from app.user.schemas import (
+from api.schemas.user import (
+    LoginRequest,
+    LoginResponse,
     ExceptionResponseSchema,
-    GetUserListResponseSchema,
     CreateUserRequestSchema,
+    GetUserListResponseSchema,
     CreateUserResponseSchema,
 )
-from app.user.services import UserService
+from api.repository.user import UserService
 from core.fastapi.dependencies import (
     PermissionDependency,
     IsAdmin,
