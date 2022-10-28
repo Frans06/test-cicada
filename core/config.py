@@ -27,8 +27,8 @@ class DevelopmentConfig(Config):
 
 
 class LocalConfig(Config):
-    WRITER_DB_URL: str = f"mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi"
-    READER_DB_URL: str = f"mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi"
+    WRITER_DB_URL: str = f"mysql+aiomysql://root:fastapi@localhost:3306/fastapi"
+    READER_DB_URL: str = f"mysql+aiomysql://root:fastapi@localhost:3306/fastapi"
 
 
 class ProductionConfig(Config):
@@ -37,12 +37,21 @@ class ProductionConfig(Config):
     READER_DB_URL: str = f"mysql+aiomysql://fastapi:fastapi@localhost:3306/prod"
 
 
-def get_config():
-    env = os.getenv("ENV", "local")
+class TestConfig(Config):
+    WRITER_DB_URL: str = f"mysql+aiomysql://root:fastapi@localhost:3306/test"
+    READER_DB_URL: str = f"mysql+aiomysql://root:fastapi@localhost:3306/test"
+    TEST_DB_URL: str = f"mysql+pymysql://root:fastapi@localhost:3306/test"
+    REDIS_HOST: str = "redis"
+    REDIS_PORT: int = 6379
+
+
+def get_config(env: str = "local"):
+    env = os.getenv("ENV", env)
     config_type = {
         "dev": DevelopmentConfig(),
         "local": LocalConfig(),
         "prod": ProductionConfig(),
+        "test": TestConfig(),
     }
     return config_type[env]
 

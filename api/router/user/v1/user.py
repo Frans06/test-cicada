@@ -10,7 +10,7 @@ from api.schemas.user import (
     GetUserListResponseSchema,
     CreateUserResponseSchema,
 )
-from api.repository.user import UserService
+from api.repository.user import UserRepository
 from core.fastapi.dependencies import (
     PermissionDependency,
     IsAdmin,
@@ -30,7 +30,7 @@ async def get_user_list(
     limit: int = Query(10, description="Limit"),
     prev: int = Query(None, description="Prev ID"),
 ):
-    return await UserService().get_user_list(limit=limit, prev=prev)
+    return await UserRepository().get_user_list(limit=limit, prev=prev)
 
 
 @user_router.post(
@@ -39,7 +39,7 @@ async def get_user_list(
     responses={"400": {"model": ExceptionResponseSchema}},
 )
 async def create_user(request: CreateUserRequestSchema):
-    await UserService().create_user(**request.dict())
+    await UserRepository().create_user(**request.dict())
     return {"email": request.email, "nickname": request.nickname}
 
 
@@ -49,5 +49,5 @@ async def create_user(request: CreateUserRequestSchema):
     responses={"404": {"model": ExceptionResponseSchema}},
 )
 async def login(request: LoginRequest):
-    token = await UserService().login(email=request.email, password=request.password)
+    token = await UserRepository().login(email=request.email, password=request.password)
     return {"token": token.token, "refresh_token": token.refresh_token}

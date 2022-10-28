@@ -1,9 +1,8 @@
 import uuid
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Column, ForeignKey, Integer, Unicode
+from sqlalchemy import Column, ForeignKey, Integer, Unicode, BigInteger, DECIMAL
 from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.mysql import UUID
 
 from core.db import Base
 from core.db.mixins import TimestampMixin
@@ -16,10 +15,10 @@ if TYPE_CHECKING:
 class Bond(Base, TimestampMixin):
     __tablename__ = "bonds"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
     name = Column(Unicode(255), index=True)
     description = Column(Unicode(255), index=False, nullable=True)
     quantity = Column(Integer, nullable=False)
-    owner_id = Column(Integer, ForeignKey("user.id"))
-    owner = relationship("User", back_populates="items")
-    transactions = relationship("Transaction", back_populates="bonds")
+    price = Column(DECIMAL(10, 4), nullable=False)
+    owner_id = Column(BigInteger, ForeignKey("users.id"))
+    owner = relationship("User", back_populates="bonds")

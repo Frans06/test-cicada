@@ -4,7 +4,7 @@ from sqlalchemy import or_, select, and_
 
 from db.models import User
 from api.schemas.user import LoginResponseSchema
-from core.db import Transactional, Propagation, session
+from core.db import Transactional, session
 from core.exceptions import (
     PasswordDoesNotMatchException,
     DuplicateEmailOrNicknameException,
@@ -13,7 +13,7 @@ from core.exceptions import (
 from core.utils.token_helper import TokenHelper
 
 
-class UserService:
+class UserRepository:
     def __init__(self):
         ...
 
@@ -34,12 +34,8 @@ class UserService:
         result = await session.execute(query)
         return result.scalars().all()
 
-    @Transactional(propagation=Propagation.REQUIRED)
-    async def create_user(
-        self, email: str, password1: str, password2: str, nickname: str
-    ) -> None:
-        if password1 != password2:
-            raise PasswordDoesNotMatchException
+    @Transactional()
+    async def create_user(self, email: str, password: str, nickname: str) -> None:
 
         query = select(User).where(or_(User.email == email, User.nickname == nickname))
         result = await session.execute(query)
@@ -47,7 +43,7 @@ class UserService:
         if is_exist:
             raise DuplicateEmailOrNicknameException
 
-        user = User(email=email, password=password1, nickname=nickname)
+        user = User(email=email, password=password, nickname=nickname)
         session.add(user)
 
     async def is_admin(self, user_id: int) -> bool:
@@ -65,6 +61,7 @@ class UserService:
         result = await session.execute(
             select(User).where(and_(User.email == email, password == password))
         )
+        # breakpoint()
         user = result.scalars().first()
         if not user:
             raise UserNotFoundException

@@ -5,7 +5,7 @@ from fastapi import Request
 from fastapi.openapi.models import APIKey, APIKeyIn
 from fastapi.security.base import SecurityBase
 
-from api.repository.user import UserService
+from api.repository.user import UserRepository
 from core.exceptions import CustomException, UnauthorizedException
 
 
@@ -32,7 +32,7 @@ class IsAdmin(BasePermission):
         if not user_id:
             return False
 
-        return await UserService().is_admin(user_id=user_id)
+        return await UserRepository().is_admin(user_id=user_id)
 
 
 class AllowAll(BasePermission):
