@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field, EmailStr, validator, condecimal
+from core.fastapi.schemas.current_user import CurrentUser
 
 
 class CreatePositionRequestSchema(BaseModel):

@@ -9,7 +9,10 @@ from api.schemas.bond import (
 )
 from api.repository.bond import BondRepository
 from core.fastapi.dependencies import (
+    get_current_user_id,
     PermissionDependency,
+    IsAuthenticated,
+    AllowAll,
     IsAdmin,
 )
 
@@ -20,13 +23,13 @@ bond_router = APIRouter()
     "",
     response_model=CreatePositionResponseSchema,
     responses={"400": {"model": ExceptionResponseSchema}},
+    dependencies=[Depends(PermissionDependency([IsAuthenticated]))],
 )
 async def create_position(request: CreatePositionRequestSchema):
-    print(request)
-    await BondRepository().create_position(**request.dict())
+    # print(request.user)
+    # await BondRepository().create_position(**request.dict(), )
     return {
-        id: request.id,
-        name: request.name,
-        quantity: request.quantity,
-        price: request.price,
+        "name": request.name,
+        "quantity": request.quantity,
+        "price": request.price,
     }

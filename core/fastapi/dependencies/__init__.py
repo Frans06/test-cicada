@@ -4,6 +4,7 @@ from .permission import (
     IsAuthenticated,
     IsAdmin,
     AllowAll,
+    get_current_user_id,
 )
 
 __all__ = [
@@ -12,4 +13,5 @@ __all__ = [
     "IsAuthenticated",
     "IsAdmin",
     "AllowAll",
+    "get_current_user_id",
 ]

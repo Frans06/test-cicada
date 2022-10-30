@@ -21,6 +21,7 @@ class IsAuthenticated(BasePermission):
     exception = UnauthorizedException
 
     async def has_permission(self, request: Request) -> bool:
+        print(request.user)
         return request.user.id is not None
 
 
@@ -51,3 +52,9 @@ class PermissionDependency(SecurityBase):
             cls = permission()
             if not await cls.has_permission(request=request):
                 raise cls.exception
+
+
+async def get_current_user_id(request: Request):
+    if not (user_id := request.user.id):
+        raise UnauthorizedException
+    return user_id
