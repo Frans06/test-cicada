@@ -11,10 +11,7 @@ from api.schemas.user import (
     CreateUserResponseSchema,
 )
 from api.repository.user import UserRepository
-from core.fastapi.dependencies import (
-    PermissionDependency,
-    IsAdmin,
-)
+from core.fastapi.dependencies import PermissionDependency, IsAdmin, RateLimiter
 
 user_router = APIRouter()
 
@@ -24,7 +21,7 @@ user_router = APIRouter()
     response_model=List[GetUserListResponseSchema],
     response_model_exclude={"id"},
     responses={"400": {"model": ExceptionResponseSchema}},
-    dependencies=[Depends(PermissionDependency([IsAdmin]))],
+    dependencies=[Depends(PermissionDependency([IsAdmin])), Depends(RateLimiter())],
 )
 async def get_user_list(
     limit: int = Query(10, description="Limit"),
@@ -37,6 +34,7 @@ async def get_user_list(
     "",
     response_model=CreateUserResponseSchema,
     responses={"400": {"model": ExceptionResponseSchema}},
+    dependencies=[Depends(RateLimiter())],
 )
 async def create_user(request: CreateUserRequestSchema):
     await UserRepository().create_user(**request.dict())
@@ -47,6 +45,7 @@ async def create_user(request: CreateUserRequestSchema):
     "/login",
     response_model=LoginResponse,
     responses={"404": {"model": ExceptionResponseSchema}},
+    dependencies=[Depends(RateLimiter())],
 )
 async def login(request: LoginRequest):
     token = await UserRepository().login(email=request.email, password=request.password)

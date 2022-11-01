@@ -9,13 +9,14 @@ from api.router import router
 from api.router.health import health_router
 from core.config import config
 from core.exceptions import CustomException
-from core.fastapi.dependencies import Logging
+from core.fastapi.dependencies import Logging, LimiterInit
 from core.fastapi.middlewares import (
     AuthenticationMiddleware,
     AuthBackend,
     SQLAlchemyMiddleware,
 )
 from core.helpers.cache import Cache, RedisBackend, CustomKeyMaker
+from core.helpers.redis import redis
 
 
 def _init_routers(app_: FastAPI) -> None:
@@ -31,6 +32,10 @@ def _init_listeners(app_: FastAPI) -> None:
             status_code=exc.code,
             content={"error_code": exc.error_code, "message": exc.message},
         )
+
+    @app_.on_event("startup")
+    async def startup():
+        await LimiterInit.init(redis)
 
 
 def _on_auth_error(request: Request, exc: Exception):

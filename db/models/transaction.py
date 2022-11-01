@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from .bond import Bond  # noqa: F401
 
 
-class TransacationType(enum.Enum):
+class TransactionType(enum.Enum):
     buy = "buy"
     sell = "sell"
 
@@ -23,4 +23,4 @@ class Transaction(Base, TimestampMixin):
     bond_id = Column(BigInteger, ForeignKey("bonds.id"))
     user_id = Column(BigInteger, ForeignKey("users.id"))
     user = relationship("User", back_populates="transactions")
-    transaction_type = Column(Enum(TransacationType))
+    transaction_type = Column(Enum(TransactionType))

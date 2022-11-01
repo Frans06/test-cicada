@@ -12,9 +12,11 @@ if TYPE_CHECKING:
     from .user import User  # noqa: F401
     from .transaction import Transaction  # noqa: F401
 
+
 class BondStatus(enum.Enum):
-  posted = "posted"
-  sold = "sold"
+    posted = "posted"
+    sold = "sold"
+
 
 class Bond(Base, TimestampMixin):
     __tablename__ = "bonds"

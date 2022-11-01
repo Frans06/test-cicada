@@ -441,6 +441,17 @@ yaml = ["PyYAML (>=3.10)"]
 zookeeper = ["kazoo (>=1.3.1)"]
 
 [[package]]
+name = "limits"
+version = "1.6"
+description = "Rate limiting utilities"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+six = ">=1.4.1"
+
+[[package]]
 name = "mako"
 version = "1.2.2"
 description = "A super-fast templating language that borrows the best ideas from the existing templating languages."
@@ -711,6 +722,17 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
+name = "slowapi"
+version = "0.1.6"
+description = "A rate limiting extension for Starlette and Fastapi"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[package.dependencies]
+limits = ">=1.5,<2.0"
+
+[[package]]
 name = "sniffio"
 version = "1.3.0"
 description = "Sniff out which async library your code is running under"
@@ -881,7 +903,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "0f7e15bde84eb0fc0563dbd0d3b55f5e742707ef45cabe18eb74b3fad3420aa0"
+content-hash = "7a48810d25996e76398f6ac97f499259d01747394c625ad32241e77e267d8d7e"
 
 [metadata.files]
 aiomysql = [
@@ -1107,6 +1129,10 @@ kombu = [
     {file = "kombu-5.2.4-py3-none-any.whl", hash = "sha256:8b213b24293d3417bcf0d2f5537b7f756079e3ea232a8386dcc89a59fd2361a4"},
     {file = "kombu-5.2.4.tar.gz", hash = "sha256:37cee3ee725f94ea8bb173eaab7c1760203ea53bbebae226328600f9d2799610"},
 ]
+limits = [
+    {file = "limits-1.6-py3-none-any.whl", hash = "sha256:12ae4449cf7daadee43edf4096acd9cb9f4bfdec3a995aa9fbd0f72b0b9af762"},
+    {file = "limits-1.6.tar.gz", hash = "sha256:6c0a57b42647f1141f5a7a0a8479b49e4367c24937a01bd9d4063a595c2dd48a"},
+]
 mako = [
     {file = "Mako-1.2.2-py3-none-any.whl", hash = "sha256:8efcb8004681b5f71d09c983ad5a9e6f5c40601a6ec469148753292abc0da534"},
     {file = "Mako-1.2.2.tar.gz", hash = "sha256:3724869b363ba630a272a5f89f68c070352137b8fd1757650017b7e06fda163f"},
@@ -1260,6 +1286,10 @@ setuptools = [
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
+]
+slowapi = [
+    {file = "slowapi-0.1.6-py3-none-any.whl", hash = "sha256:cc1dabf8cf88b2acc6cc505cc16ec0446c70d7b8d4110e85f1ded611d47c4454"},
+    {file = "slowapi-0.1.6.tar.gz", hash = "sha256:bb20650efb860422d7e1e740bc3d6b781aa9f5a947613979bfc15d3c58082244"},
 ]
 sniffio = [
     {file = "sniffio-1.3.0-py3-none-any.whl", hash = "sha256:eecefdce1e5bbfb7ad2eeaabf7c1eeb404d7757c379bd1f7e5cce9d8bf425384"},

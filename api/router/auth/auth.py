@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Response
-
+from fastapi import APIRouter, Response, Depends
 from api.schemas.auth import (
     RefreshTokenRequest,
     VerifyTokenRequest,
@@ -7,6 +6,7 @@ from api.schemas.auth import (
 )
 from api.repository.jwt import JwtService
 from api.schemas.user import ExceptionResponseSchema
+from core.fastapi.dependencies import RateLimiter
 
 auth_router = APIRouter()
 
@@ -15,6 +15,7 @@ auth_router = APIRouter()
     "/refresh",
     response_model=RefreshTokenResponse,
     responses={"400": {"model": ExceptionResponseSchema}},
+    dependencies=[Depends(RateLimiter())],
 )
 async def refresh_token(request: RefreshTokenRequest):
     token = await JwtService().create_refresh_token(
