@@ -16,8 +16,8 @@ class AuthBackend(AuthenticationBackend):
         self, conn: HTTPConnection
     ) -> Tuple[bool, Optional[CurrentUser]]:
         current_user = CurrentUser()
-        authorization: str = conn.headers.get("Authorization")
-        print(conn.headers)
+        if not (authorization := conn.headers.get("Authorization")):
+            authorization = conn.headers.get("authorization")
         if not authorization:
             return False, current_user
 
@@ -37,7 +37,6 @@ class AuthBackend(AuthenticationBackend):
                 config.JWT_SECRET_KEY,
                 algorithms=[config.JWT_ALGORITHM],
             )
-            print(payload, "payload")
             user_id = payload.get("user_id")
         except jwt.exceptions.PyJWTError:
             return False, current_user

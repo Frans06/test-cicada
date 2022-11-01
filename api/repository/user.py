@@ -25,7 +25,7 @@ class UserRepository:
         query = select(User)
 
         if prev:
-            query = query.where(User.id < prev)
+            query = query.where(User.id > prev)
 
         if limit > 12:
             limit = 12

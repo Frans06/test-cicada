@@ -9,12 +9,18 @@ class Transactional:
         @wraps(function)
         async def decorator(*args, **kwargs):
             try:
-                result = await function(*args, **kwargs)
-                await session.commit()
+                results = await function(*args, **kwargs)
+                meta_result = await session.commit()
+                if results:
+                  if type(results) == list:
+                    for result in results:
+                      await session.refresh(result)
+                  else:
+                     await session.refresh(results)
             except Exception as e:
                 await session.rollback()
                 raise e
 
-            return result
+            return results, meta_result
 
         return decorator
