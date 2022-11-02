@@ -41,7 +41,7 @@ class TestConfig(Config):
     WRITER_DB_URL: str = f"mysql+aiomysql://root:fastapi@localhost:3306/test"
     READER_DB_URL: str = f"mysql+aiomysql://root:fastapi@localhost:3306/test"
     TEST_DB_URL: str = f"mysql+pymysql://root:fastapi@localhost:3306/test"
-    REDIS_HOST: str = "redis"
+    REDIS_HOST: str = "localhost"
     REDIS_PORT: int = 6379
 
 

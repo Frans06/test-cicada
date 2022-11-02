@@ -20,13 +20,43 @@ class BondRepository:
     def __init__(self):
         ...
 
+    """
+    Create a new bond position for the given owner, with the given name, quantity, and price.
+    
+    :param owner_id: The id of the user who owns the position
+    :type owner_id: int
+    :param name: The name of the bond
+    :type name: int
+    :param quantity: int
+    :type quantity: int
+    :param price: str
+    :type price: str
+    :return: The bond object is being returned.
+    """
+
     @Transactional()
     async def create_position(
         self, owner_id: int, name: int, quantity: int, price: str
-    ) -> None:
+    ) -> Bond:
         bond = Bond(name=name, quantity=quantity, owner_id=owner_id, price=price)
         session.add(bond)
         return bond
+
+    """
+    "Get a list of bonds, with a maximum of 12, starting from the bond with the id greater than the one
+    provided."
+    
+    The function is async, so it can be called from an async function. It takes two parameters:
+    
+    - `limit`: The maximum number of bonds to return.
+    - `prev`: The id of the bond to start from
+    
+    :param limit: The number of positions to return, defaults to 12
+    :type limit: int (optional)
+    :param prev: The id of the last bond you've seen. This is used to paginate the results
+    :type prev: Optional[int]
+    :return: A list of Bond objects.
+    """
 
     async def get_positions(
         self, limit: int = 12, prev: Optional[int] = None
@@ -42,6 +72,16 @@ class BondRepository:
         query = query.limit(limit)
         result = await session.execute(query)
         return result.scalars().all()
+
+    """
+    It updates the bond status to sold and creates two transactions
+    
+    :param position: int, buyer_id: int
+    :type position: int
+    :param buyer_id: The id of the user who is buying the bond
+    :type buyer_id: int
+    :return: Bond
+    """
 
     @Transactional()
     async def buy_position(self, position: int, buyer_id: int) -> List[Bond]:
@@ -69,6 +109,15 @@ class BondRepository:
         session.add(sell_trans)
         session.add(buy_trans)
         return bond
+
+    """
+    It takes a list of bonds, gets the exchange rate, and then returns a list of bonds with the price
+    converted to USD
+    
+    :param results: List[Bond]
+    :type results: List[Bond]
+    :return: A list of BondSchema objects
+    """
 
     @staticmethod
     async def attach_exchange_rate(results: List[Bond]):

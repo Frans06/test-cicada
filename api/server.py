@@ -37,6 +37,10 @@ def _init_listeners(app_: FastAPI) -> None:
     async def startup():
         await LimiterInit.init(redis)
 
+    @app_.on_event("shutdown")
+    async def startup():
+        await LimiterInit.close()
+
 
 def _on_auth_error(request: Request, exc: Exception):
     status_code, error_code, message = 401, None, str(exc)

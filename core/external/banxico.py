@@ -10,6 +10,12 @@ def authenticate():
     return TOKEN
 
 
+"""
+It gets the exchange rate from the Banxico API, caches it for a long time, and returns it
+:return: A decimal object with the exchange rate
+"""
+
+
 @Cache.cached(prefix="get_usd_exchange_rate", ttl=1000000)
 async def get_exchange_rate():
     url = (

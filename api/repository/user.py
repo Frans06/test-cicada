@@ -17,6 +17,17 @@ class UserRepository:
     def __init__(self):
         ...
 
+    """
+    `get_user_list` returns a list of `User` objects, with a maximum of 12 items, starting from the user
+    with the id greater than `prev`
+    
+    :param limit: The number of users to return, defaults to 12
+    :type limit: int (optional)
+    :param prev: Optional[int] = None
+    :type prev: Optional[int]
+    :return: A list of User objects
+    """
+
     async def get_user_list(
         self,
         limit: int = 12,
@@ -34,6 +45,17 @@ class UserRepository:
         result = await session.execute(query)
         return result.scalars().all()
 
+    """
+    > It checks if the email or nickname is already taken, and if not, it creates a new user
+    
+    :param email: str
+    :type email: str
+    :param password: The password to be hashed
+    :type password: str
+    :param nickname: str
+    :type nickname: str
+    """
+
     @Transactional()
     async def create_user(self, email: str, password: str, nickname: str) -> None:
 
@@ -46,6 +68,14 @@ class UserRepository:
         user = User(email=email, password=password, nickname=nickname)
         session.add(user)
 
+    """
+    "Return True if the user with the given ID is an admin, otherwise return False."
+    
+    :param user_id: The user's ID
+    :type user_id: int
+    :return: A boolean value.
+    """
+
     async def is_admin(self, user_id: int) -> bool:
         result = await session.execute(select(User).where(User.id == user_id))
         user = result.scalars().first()
@@ -56,6 +86,16 @@ class UserRepository:
             return False
 
         return True
+
+    """
+    A login function that takes in an email and password and returns a token and refresh token.
+    
+    :param email: The email address of the user
+    :type email: str
+    :param password: The password to be hashed
+    :type password: str
+    :return: A LoginResponseSchema object
+    """
 
     async def login(self, email: str, password: str) -> LoginResponseSchema:
         result = await session.execute(

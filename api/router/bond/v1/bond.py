@@ -27,6 +27,22 @@ class CurrencyEnum(str, Enum):
     MXN = "MXN"
 
 
+"""
+It creates a bond position
+
+:param request: CreatePositionRequestSchema - this is the request body that will be validated
+against the schema
+:type request: CreatePositionRequestSchema
+:param user_id: This is the user_id that we get from the get_current_user_id function
+:return: The response is a dict with the following keys:
+    name: str
+    quantity: int
+    price: float
+    id: int
+    owner_id: int
+"""
+
+
 @bond_router.post(
     "",
     response_model=CreatePositionResponseSchema,
@@ -51,6 +67,19 @@ async def create_position(
     }
 
 
+"""
+It returns a list of bond positions, optionally filtered by currency and paginated by limit and prev
+
+:param currency: CurrencyEnum = Query(CurrencyEnum.MXN, description="Currency")
+:type currency: CurrencyEnum
+:param limit: int = Query(10, description="Limit")
+:type limit: int
+:param prev: int = Query(None, description="Prev ID")
+:type prev: int
+:return: A list of bonds
+"""
+
+
 @bond_router.get(
     "",
     response_model=List[GetBondListResponseSchema],
@@ -69,6 +98,15 @@ async def list_positions(
     if currency == CurrencyEnum.USD:
         results = await BondRepository.attach_exchange_rate(results)
     return results
+
+
+"""
+"Buy a bond position."
+:param id: str - the id of the position to buy
+:type id: str
+:param buyer_id: The ID of the user who is buying the position
+:return: A dictionary with the id, owner_id, name, status, and success of the bond.
+"""
 
 
 @bond_router.patch(

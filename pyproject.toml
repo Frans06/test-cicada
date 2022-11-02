@@ -25,6 +25,11 @@ pydantic = {extras = ["email"], version = "^1.10.2"}
 SQLAlchemy-Utils = "^0.38.3"
 pytest-mock = "^3.10.0"
 slowapi = "^0.1.6"
+httpx = "^0.23.0"
+asgi-lifespan = "^1.0.1"
+anyio = "^3.6.2"
+trio = "^0.22.0"
+aioredis = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
 behave = "^1.2.6"

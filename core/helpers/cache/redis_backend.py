@@ -7,6 +7,7 @@ from core.helpers.cache.base import BaseBackend
 from core.helpers.redis import redis
 
 
+# It's a class that uses Redis as a backend for caching
 class RedisBackend(BaseBackend):
     async def get(self, key: str) -> Any:
         result = await redis.get(key)
